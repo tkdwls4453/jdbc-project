@@ -10,6 +10,7 @@ public class EmployeeDto {
 
     public EmployeeDto(String name, String ssn, String bdate, String address, String sex, String salary, String supervisorNmae, String dName) {
         this.name = name;
+        this.ssn = ssn;
         this.bdate = bdate;
         this.address = address;
         this.sex = sex;

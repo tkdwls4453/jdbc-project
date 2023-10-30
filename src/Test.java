@@ -21,8 +21,9 @@ public class Test {
 //        }
 
         // 직원 삭제
-        EmployeeDao.deleteEmployee(conn, "123456788");
+//        EmployeeDao.deleteEmployee(conn, "123456788");
 
+        EmployeeDao.updateEmployee(conn, "123456789", "Minit", "A");
 
         // 연결 취소
         EmployeeDao.closeConnection(conn);
