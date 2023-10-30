@@ -33,8 +33,8 @@ public class EmployeeDao {
      * @param Dno
      */
     public static void createEmployee(Connection conn, String fname, String minit, String lname, String ssn,
-                                      String bdate, String address, Sex sex,
-                                      Double salary, String superSsn, Long Dno){
+                                      String bdate, String address, String sex,
+                                      Double salary, String superSsn, String Dno){
         try {
             String sql = "insert into EMPLOYEE (Fname, Minit, Lname, Ssn, Bdate, Address, Sex, Salary, Super_ssn, Dno, created, modified) " +
                     "values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -47,10 +47,10 @@ public class EmployeeDao {
             pstmt.setString(4, ssn);
             pstmt.setString(5, bdate);
             pstmt.setString(6, address);
-            pstmt.setString(7, sex.toString());
+            pstmt.setString(7, sex);
             pstmt.setString(8, salary.toString());
             pstmt.setString(9, superSsn);
-            pstmt.setString(10, Dno.toString());
+            pstmt.setString(10, Dno);
             pstmt.setString(11, now);
             pstmt.setString(12, now);
 
@@ -65,11 +65,62 @@ public class EmployeeDao {
         }
     }
 
-    public static List<EmployeeDto> findAllEmployee(Connection conn, List<String> selectedAttributes ){
+    public static List<EmployeeDto> findAllEmployee(Connection conn, String searchCondition, String conditionValue){
         ArrayList<EmployeeDto> employees = new ArrayList<>();
+        try {
+            String selectClause = "select E.Fname, E.Minit, E.Lname, E.Ssn, E.Bdate, E.Address, E.Sex, E.Salary, S.Fname, S.Minit, S.Lname, D.Dname";
+            String fromClause = "from EMPLOYEE E, EMPLOYEE S, DEPARTMENT D";
+            String whereClause = "where E.Super_ssn = S.Ssn AND E.Dno = D.Dnumber ";
+
+            if (!conditionValue.equals("")) {
+                switch (searchCondition) {
+                    case "ALL":
+                        break;
+                    case "FNAME":
+                        whereClause += "AND E.Fname = '" + conditionValue + "'";
+                        break;
+                    case "SSN":
+                        whereClause += "AND E.Ssn = '" + conditionValue + "'";
+                        break;
+                    case "ADDRESS":
+                        whereClause += "AND E.Address LIKE '%" + conditionValue + "%'";
+                        break;
+                    case "SEX":
+                        whereClause += "AND E.Sex = '" + conditionValue + "'";
+                        break;
+                    case "BIG_SALARY":
+                        whereClause += "AND E.Salary >= " + conditionValue;
+                        break;
+                    case "SMALL_SALARY":
+                        whereClause += "AND E.Salary <= " + conditionValue;
+                        break;
+                    case "SUPERVISOR_NAME":
+                        whereClause += "AND S.Fname = '" + conditionValue + "'";
+                        break;
+                    case "DNAME":
+                        whereClause += "AND D.Dname = '" + conditionValue + "'";
+                        break;
+                }
+            }
+
+            String sql = selectClause + " " + fromClause + " " + whereClause + ";";
+
+            System.out.println("sql = " + sql);
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            while (rs.next()) {
+                EmployeeDto employeeDto = new EmployeeDto(rs.getString("E.Fname") + " " + rs.getString("E.Minit") + " " + rs.getString("E.Lname"),
+                        rs.getString("Ssn"), rs.getString("Bdate"), rs.getString("Address"), rs.getString("Sex"), rs.getString("Salary"),
+                        rs.getString("S.Fname") + " " + rs.getString("S.Minit") + " " + rs.getString("S.Lname"),
+                        rs.getString("D.Dname"));
+                employees.add(employeeDto);
+            }
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
         return employees;
     }
-
     public static void closeConnection(Connection conn) {
         try{
             conn.close();
