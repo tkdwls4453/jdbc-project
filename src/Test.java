@@ -15,10 +15,15 @@ public class Test {
 //                "3321 Castle, Spring, TX", Sex.M, 30000.00, "333445555", 5L);
 
         // 직원 조건으로 검색
-        List<EmployeeDto> allEmployee = EmployeeDao.findAllEmployee(conn, "ALL", "40000");
-        for (EmployeeDto employeeDto : allEmployee) {
-            System.out.println(employeeDto.toString());
-        }
+//        List<EmployeeDto> allEmployee = EmployeeDao.findAllEmployee(conn, "ALL", "40000");
+//        for (EmployeeDto employeeDto : allEmployee) {
+//            System.out.println(employeeDto.toString());
+//        }
+
+        // 직원 삭제
+        EmployeeDao.deleteEmployee(conn, "123456788");
+
+
         // 연결 취소
         EmployeeDao.closeConnection(conn);
     }

@@ -65,6 +65,13 @@ public class EmployeeDao {
         }
     }
 
+    /**
+     * 직원 조건 검색
+     * @param conn
+     * @param searchCondition
+     * @param conditionValue
+     * @return
+     */
     public static List<EmployeeDto> findAllEmployee(Connection conn, String searchCondition, String conditionValue){
         ArrayList<EmployeeDto> employees = new ArrayList<>();
         try {
@@ -121,6 +128,25 @@ public class EmployeeDao {
         }
         return employees;
     }
+
+    public static void deleteEmployee(Connection conn, String ssn) {
+        try {
+            String sql = "DELETE from EMPLOYEE where Ssn = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, ssn);
+
+            int r = pstmt.executeUpdate();
+            System.out.println("변경된 row: " + r);
+            System.out.println("직원이 삭제됐습니다.");
+            pstmt.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
+    }
+
+
     public static void closeConnection(Connection conn) {
         try{
             conn.close();
