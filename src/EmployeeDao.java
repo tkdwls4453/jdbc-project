@@ -19,20 +19,6 @@ public class EmployeeDao {
         return conn;
     }
 
-    /**
-     * 직원 정보 삽입
-     * @param conn
-     * @param fname
-     * @param minit
-     * @param lname
-     * @param ssn
-     * @param bdate
-     * @param address
-     * @param sex
-     * @param salary
-     * @param superSsn
-     * @param Dno
-     */
     public static void createEmployee(Connection conn, String fname, String minit, String lname, String ssn,
                                       String bdate, String address, String sex,
                                       Double salary, String superSsn, String Dno){

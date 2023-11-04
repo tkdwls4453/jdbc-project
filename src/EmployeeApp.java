@@ -48,7 +48,7 @@ public class EmployeeApp {
         JPanel searchPanel = new JPanel();
         JLabel searchLabel = new JLabel("검색범위:");
         searchOptions = new JComboBox<>(new String[]{"전체", "이름(성)", "SSN", "주소", "성별", "연봉(이상)", "연봉(이하)", "상사 이름(성)", "부서"});
-        sexOptions = new JComboBox<>(new String[]{"M", "W"});
+        sexOptions = new JComboBox<>(new String[]{"M", "F"});
         conditionField = new JTextField(10);
 
         searchPanel.add(searchLabel);
@@ -113,7 +113,7 @@ public class EmployeeApp {
         frame.add(checkboxesPanel);
         frame.add(buttonPanel);
         frame.add(addButton);
-        frame.setSize(1000, 600);
+        frame.setSize(1200, 600);
         frame.setVisible(true);
     }
 
@@ -214,6 +214,7 @@ public class EmployeeApp {
         conditionCommandMap.put("성별", "SEX");
         conditionCommandMap.put("연봉(이상)", "BIG_SALARY");
         conditionCommandMap.put("연봉(이하)", "SMALL_SALARY");
+        conditionCommandMap.put("상사 이름(성)", "SUPERVISOR_NAME" );
         conditionCommandMap.put("부서", "DNAME");
 
         String conditionValue = "";
@@ -289,7 +290,7 @@ public class EmployeeApp {
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 
         JScrollPane tableScrollPane = new JScrollPane(table);
-        tableScrollPane.setPreferredSize(new Dimension(800, 400));
+        tableScrollPane.setPreferredSize(new Dimension(1000, 400));
         frame.add(tableScrollPane);
 
         JPanel deleteButtonPanel = new JPanel();

@@ -3,9 +3,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class EmployeeFormDialog extends JDialog {
     private JTextField fnameField;
@@ -65,7 +62,7 @@ public class EmployeeFormDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (EmployeeDao.existSsn(connection, ssnField.getText())) {
-                    JOptionPane.showMessageDialog(panel, "이미 존재하는 직원은 생성할 수 없습니");
+                    JOptionPane.showMessageDialog(panel, "이미 존재하는 직원은 생성할 수 없습니ek");
                     return;
                 }
 
@@ -108,8 +105,6 @@ public class EmployeeFormDialog extends JDialog {
         employeeData[7] = salaryField.getText();
         employeeData[8] = superSsnField.getText();
         employeeData[9] = dnoField.getText();
-
-
 
         EmployeeDao.createEmployee(connection, employeeData[0], employeeData[1], employeeData[2]
                 , ssn, employeeData[4], employeeData[5], employeeData[6], Double.parseDouble(employeeData[7])
