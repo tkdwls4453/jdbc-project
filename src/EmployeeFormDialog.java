@@ -15,7 +15,7 @@ public class EmployeeFormDialog extends JDialog {
     private JTextField salaryField;
     private JTextField superSsnField;
     private JTextField dnoField;
-
+    private JPanel panel;
     private Connection connection;
     private boolean employeeAdded = false;
     private String[] employeeData = new String[10];
@@ -23,7 +23,7 @@ public class EmployeeFormDialog extends JDialog {
     public EmployeeFormDialog(Frame owner) {
         super(owner, "새 직원 정보 입력", true);
 
-        JPanel panel = new JPanel(new GridLayout(10, 2));
+        panel = new JPanel(new GridLayout(10, 2));
 
         fnameField = new JTextField();
         minitField = new JTextField();
@@ -59,15 +59,22 @@ public class EmployeeFormDialog extends JDialog {
 
         JButton addButton = new JButton("추가");
         addButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
+                String ssn = ssnField.getText();
+
+                if (ssn.equals("")) {
+                    JOptionPane.showMessageDialog(panel, "SSN을 입력해야 합니다.");
+                    return;
+                }
                 if (EmployeeDao.existSsn(connection, ssnField.getText())) {
-                    JOptionPane.showMessageDialog(panel, "이미 존재하는 직원은 생성할 수 없습니ek");
+                    JOptionPane.showMessageDialog(panel, "이미 존재하는 직원은 생성할 수 없습니다");
                     return;
                 }
 
                 if (!EmployeeDao.existSsn(connection, superSsnField.getText())) {
-                    JOptionPane.showMessageDialog(panel, "존재하는 직원을 상사로 지정할 수 없습니다");
+                    JOptionPane.showMessageDialog(panel, "존재하지 않는 직원을 상사로 지정할 수 없습니다");
                     return;
                 }
 
@@ -89,11 +96,6 @@ public class EmployeeFormDialog extends JDialog {
     public String[] addEmployee() {
         System.out.println("EmployeeFormDialog.addEmployee");
         String ssn = ssnField.getText();
-
-        if (ssn.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "SSN을 입력해야 합니다.");
-            return null;
-        }
 
         employeeData[0] = fnameField.getText();
         employeeData[1] = minitField.getText();
